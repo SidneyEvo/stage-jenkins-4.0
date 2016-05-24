@@ -1,14 +1,12 @@
 #hier gebruik ik de basic image van java voor mijn eigen image te bouwen.
 FROM java:8-jdk
 
-#hier geef ik de opdracht om de tool curl te downloaden/installeren/updaten
 RUN apt-get update && apt-get install -y git curl zip && rm -rf /var/lib/apt/lists/*
 
 #
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT 50000
 
-#hier maak ik de gebruiker en groep jenkins aan , met id = 1000 , jenkins gebruikt deze user.
 ARG user=jenkins
 ARG group=jenkins
 ARG uid=1000
@@ -43,7 +41,6 @@ ARG JENKINS_SHA
 ENV JENKINS_SHA ${JENKINS_SHA:-da06f963edb627f0ced2fce612f9985d1928f79b}
 
 
-# could use ADD but this one does not check Last-Modified header 
 # see https://github.com/docker/docker/issues/8331
 RUN curl -fsSL http://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/jenkins-war-${JENKINS_VERSION}.war -o /usr/share/jenkins/jenkins.war \
   && echo "$JENKINS_SHA  /usr/share/jenkins/jenkins.war" | sha1sum -c -
